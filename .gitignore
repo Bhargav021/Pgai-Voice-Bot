@@ -1,0 +1,27 @@
+# Secrets
+.env
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Generated outputs (commit to GitHub selectively)
+recordings/*.mp3
+recordings/*.ogg
+transcripts/*.txt
+logs/*.log
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+desktop.ini
