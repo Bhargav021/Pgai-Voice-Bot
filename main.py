@@ -208,7 +208,8 @@ async def media_stream(ws: WebSocket):
                 pipeline = AudioPipeline(
                     on_transcript=lambda text: asyncio.create_task(
                         _handle_transcript(text, ws, stream_sid, state, call_label)
-                    )
+                    ),
+                    voice=patient.tts_voice,
                 )
 
                 state.update({
@@ -259,6 +260,14 @@ async def media_stream(ws: WebSocket):
 
 _NOISE_WORDS = {"um", "uh", "ah", "hmm", "mhm", "hm", "oh", "okay", "ok", "yeah", "yep"}
 
+# Phrases that identify the Twilio recording disclaimer — skip to avoid wasting the first turn
+_DISCLAIMER_PHRASES = (
+    "recorded for quality",
+    "quality and training",
+    "this call may be recorded",
+    "may be recorded for",
+)
+
 
 async def _handle_transcript(
     text: str,
@@ -282,9 +291,15 @@ async def _handle_transcript(
     if state.get("hangup_requested"):
         return
 
-    # ── Noise filter — skip filler words and empty fragments ─────────────────
     stripped = text.strip()
-    words    = stripped.lower().split()
+
+    # ── Disclaimer filter — skip Twilio privacy notice (fires before real greeting) ──
+    if any(p in stripped.lower() for p in _DISCLAIMER_PHRASES):
+        log.info(f"[FILTER] Skipping privacy disclaimer: '{stripped[:80]}'")
+        return
+
+    # ── Noise filter — skip filler words and empty fragments ─────────────────
+    words = stripped.lower().split()
     if len(stripped) < 4 or (len(words) == 1 and words[0] in _NOISE_WORDS):
         log.info(f"[FILTER] Dropping short/noise transcript: '{stripped}'")
         return

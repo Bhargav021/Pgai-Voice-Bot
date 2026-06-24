@@ -2,11 +2,13 @@
 AudioPipeline — Deepgram real-time STT + OpenAI TTS for one call.
 
 Inbound:  raw µ-law 8 kHz audio bytes from Twilio Media Streams
-          → Deepgram Nova-2 live transcription
-          → on_transcript(text) callback
+          → Deepgram Nova-3 live transcription (interim_results=True)
+          → is_final fragments accumulated in _interim_buffer
+          → UtteranceEnd event flushes buffer as one complete utterance
+          → on_transcript(full_text) callback fires once per turn
 
 Outbound: text reply from PatientAgent
-          → OpenAI TTS tts-1 (raw 24 kHz PCM)
+          → OpenAI TTS tts-1-hd (raw 24 kHz PCM, per-scenario voice)
           → resample to 8 kHz → encode to µ-law → base64
           → returned to main.py for injection into Twilio WebSocket
 """
@@ -34,16 +36,19 @@ except ModuleNotFoundError:
 class AudioPipeline:
     """Manages one call's Deepgram STT connection and OpenAI TTS."""
 
-    def __init__(self, on_transcript):
+    def __init__(self, on_transcript, voice: str = "nova"):
         """
         on_transcript: coroutine function(text: str) → None
             Called with each final Deepgram transcript segment.
+        voice: OpenAI TTS voice name — passed per scenario so personas sound distinct.
         """
-        self.on_transcript = on_transcript
-        self._dg_conn      = None
-        self._openai       = None
-        self._dg_client    = None
-        self.listening     = True   # set False during TTS playback to prevent echo
+        self.on_transcript    = on_transcript
+        self.voice            = voice
+        self._dg_conn         = None
+        self._openai          = None
+        self._dg_client       = None
+        self.listening        = True          # set False during TTS playback to prevent echo
+        self._interim_buffer: list[str] = []  # accumulates is_final fragments until UtteranceEnd
 
         # ── Deepgram ──────────────────────────────────────────────────────────
         dg_key = os.getenv("DEEPGRAM_API_KEY")
@@ -84,21 +89,22 @@ class AudioPipeline:
             conn = self._dg_client.listen.asynclive.v("1")
 
             # Step 2: register handlers BEFORE starting
-            conn.on(LiveTranscriptionEvents.Transcript, self._on_deepgram_transcript)
-            conn.on(LiveTranscriptionEvents.Error,      self._on_deepgram_error)
-            conn.on(LiveTranscriptionEvents.Close,      self._on_deepgram_close)
+            conn.on(LiveTranscriptionEvents.Transcript,  self._on_deepgram_transcript)
+            conn.on(LiveTranscriptionEvents.UtteranceEnd, self._on_utterance_end)
+            conn.on(LiveTranscriptionEvents.Error,        self._on_deepgram_error)
+            conn.on(LiveTranscriptionEvents.Close,        self._on_deepgram_close)
 
             # Step 3: open the WebSocket (returns bool, NOT the connection)
             options = LiveOptions(
-                model="nova-2",
+                model="nova-3",            # nova-3: 54% WER reduction over nova-2 on telephony
                 language="en-US",
                 smart_format=True,
-                encoding="mulaw",       # Twilio sends µ-law
-                sample_rate=8000,       # Twilio sends 8 kHz
+                encoding="mulaw",          # Twilio sends µ-law
+                sample_rate=8000,          # Twilio sends 8 kHz
                 channels=1,
-                endpointing=300,        # 300 ms silence -> end-of-utterance
-                interim_results=False,
-                # utterance_end_ms omitted: causes HTTP 400 on Deepgram SDK 3.7.4
+                endpointing=600,           # 600ms silence → is_final; combined with utterance_end_ms
+                interim_results=True,      # required: enables UtteranceEnd event pipeline
+                utterance_end_ms="1200",   # flush buffer after 1200ms word-timestamp gap (str required)
             )
             success = await conn.start(options)
             if success is False:
@@ -115,16 +121,31 @@ class AudioPipeline:
     # ── STT: receive transcript ───────────────────────────────────────────────
 
     async def _on_deepgram_transcript(self, _conn, result=None, **kwargs) -> None:
-        """SDK v3 asynclive requires async handlers — SDK does `await handler(...)`.
-        Sync handlers return None, causing 'a coroutine was expected, got None' crash."""
+        """Accumulate is_final fragments into _interim_buffer.
+
+        With interim_results=True, Deepgram sends rapid interim events (is_final=False)
+        as the speaker talks, then is_final=True when it commits to a segment.
+        A long utterance can produce several is_final=True segments split at breathing
+        pauses. We buffer them all and only fire on_transcript once when UtteranceEnd
+        fires (see _on_utterance_end).
+
+        Interim results (is_final=False) are discarded — they change rapidly and are
+        not accurate enough to act on.
+        """
         if result is None:
             return
         try:
             alt  = result.channel.alternatives[0]
             text = alt.transcript.strip()
-            if result.is_final and text:
-                log.info(f"[STT final] {text}")
-                self.on_transcript(text)  # lambda in main.py schedules the task
+            if not text:
+                return
+            if result.is_final:
+                self._interim_buffer.append(text)
+                log.debug(
+                    f"[STT is_final] buffered fragment "
+                    f"({len(self._interim_buffer)} total): '{text}'"
+                )
+            # interim (is_final=False) discarded — wait for UtteranceEnd to flush
         except Exception as e:
             log.error(f"Transcript handler error: {e}")
 
@@ -134,6 +155,27 @@ class AudioPipeline:
     async def _on_deepgram_close(self, _conn, close=None, **kwargs) -> None:
         log.warning("[Deepgram CLOSED]")
         self._dg_conn = None
+
+    async def _on_utterance_end(self, _conn, utterance_end=None, **kwargs) -> None:
+        """UtteranceEnd fires after utterance_end_ms gap in word-level timestamps.
+
+        This is the definitive 'speaker finished' signal. Flush all accumulated
+        is_final fragments as a single complete utterance and fire on_transcript once.
+        """
+        log.debug(
+            f"[Deepgram UtteranceEnd] flushing {len(self._interim_buffer)} fragment(s)"
+        )
+        await self._flush_buffer()
+
+    async def _flush_buffer(self) -> None:
+        """Join buffered is_final fragments and fire the on_transcript callback once."""
+        if not self._interim_buffer:
+            return
+        full_text = " ".join(self._interim_buffer).strip()
+        self._interim_buffer.clear()
+        if full_text:
+            log.info(f"[STT utterance] {full_text}")
+            self.on_transcript(full_text)  # lambda in main.py schedules the LLM task
 
     # ── STT: forward audio ───────────────────────────────────────────────────
 
@@ -170,11 +212,11 @@ class AudioPipeline:
 
         try:
             resp = await self._openai.audio.speech.create(
-                model="tts-1",
-                voice="alloy",          # clear, neutral, gender-neutral
+                model="tts-1-hd",       # tts-1-hd: higher fidelity, less consonant clipping
+                voice=self.voice,       # per-scenario voice (set at construction time)
                 input=text,
                 response_format="pcm",  # raw signed 16-bit PCM at 24 kHz
-                speed=1.0,
+                speed=0.9,              # 0.9 prevents sibilant clipping at 8kHz µ-law bandwidth
             )
             pcm_24k: bytes = resp.content
 
@@ -193,7 +235,17 @@ class AudioPipeline:
     # ── Cleanup ──────────────────────────────────────────────────────────────
 
     async def close(self) -> None:
-        """Gracefully shut down the Deepgram WebSocket."""
+        """Gracefully shut down the Deepgram WebSocket.
+
+        Flushes any buffered fragments first — if the call ends mid-utterance the
+        UtteranceEnd event may not have fired, so we flush manually to ensure the
+        last agent turn is captured in the transcript.
+        """
+        if self._interim_buffer:
+            log.info(
+                f"[STT] Flushing {len(self._interim_buffer)} buffered fragment(s) on close"
+            )
+            await self._flush_buffer()
         if self._dg_conn:
             try:
                 await self._dg_conn.finish()

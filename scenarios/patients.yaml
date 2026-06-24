@@ -27,6 +27,7 @@ scenarios:
     condition: "Type 2 diabetes, needs quarterly checkup"
     goal: "Book a Tuesday morning appointment for a diabetes checkup"
     personality: "Polite, slightly anxious, asks follow-up questions"
+    tts_voice: "nova"
     max_turns: 10
     system_prompt: |
       You are Maria Gonzalez, a patient calling a medical clinic to schedule
@@ -57,6 +58,7 @@ scenarios:
     condition: "Annual physical, appointment already booked"
     goal: "Move existing Friday appointment to Monday"
     personality: "Business-like, efficient, no small talk"
+    tts_voice: "onyx"
     max_turns: 10
     system_prompt: |
       You are David Chen calling a medical clinic to reschedule an appointment.
@@ -84,6 +86,7 @@ scenarios:
     condition: "Routine check-up appointment"
     goal: "Cancel a Thursday appointment, may rebook later"
     personality: "Apologetic, explains reason briefly"
+    tts_voice: "nova"
     max_turns: 8
     system_prompt: |
       You are Sarah Miller calling a medical clinic to cancel an appointment
@@ -111,6 +114,7 @@ scenarios:
     condition: "Hypertension, on lisinopril 10 mg daily"
     goal: "Request an urgent refill for lisinopril — only 3 days left"
     personality: "Direct, mildly impatient, has had refill delays before"
+    tts_voice: "onyx"
     max_turns: 10
     system_prompt: |
       You are James Okafor calling your doctor's office to request a refill
@@ -141,6 +145,7 @@ scenarios:
     condition: "New patient, no history yet"
     goal: "Find out clinic hours and whether there is parking"
     personality: "Friendly, new to the area, asks multiple questions"
+    tts_voice: "nova"
     max_turns: 8
     system_prompt: |
       You are Elena Vasquez, a new patient who has never visited this clinic
@@ -171,6 +176,7 @@ scenarios:
     condition: "Retired, recently switched insurance to Blue Cross Blue Shield"
     goal: "Confirm the clinic accepts Blue Cross Blue Shield PPO"
     personality: "Careful, detail-oriented, slightly hard of hearing (speaks slowly)"
+    tts_voice: "onyx"
     max_turns: 8
     system_prompt: |
       You are Tom Richardson calling a medical clinic to check whether they
@@ -204,6 +210,7 @@ scenarios:
     condition: "Needs a skin check (dermatology)"
     goal: "Book a Saturday appointment — will push hard before accepting weekday"
     personality: "Busy professional, insists on weekend, eventually flexible"
+    tts_voice: "nova"
     max_turns: 10
     system_prompt: |
       You are Priya Sharma, a busy software engineer who calls a clinic to
@@ -238,6 +245,7 @@ scenarios:
     condition: "Has an unresolved billing dispute from 2 months ago"
     goal: "Escalate billing complaint and speak to a manager"
     personality: "Angry but not abusive, expects accountability"
+    tts_voice: "onyx"
     max_turns: 12
     system_prompt: |
       You are Mike Donovan and you are frustrated. You were charged $340 for
@@ -273,6 +281,7 @@ scenarios:
     condition: "Wants a flu shot"
     goal: "Book a flu shot appointment — but frequently interrupts the agent"
     personality: "Impatient, talks over people, stream-of-consciousness"
+    tts_voice: "nova"
     max_turns: 12
     system_prompt: |
       You are Amy Wong, an impatient young woman who wants to book a flu shot.
@@ -303,6 +312,7 @@ scenarios:
     condition: "Hypertension + knee pain, also needs address"
     goal: "Get a refill, book an appointment, AND get the clinic address — all in one call"
     personality: "Chatty, adds new requests mid-conversation"
+    tts_voice: "onyx"
     max_turns: 14
     system_prompt: |
       You are Carlos Rivera. You're calling with three separate things in mind
@@ -337,6 +347,7 @@ scenarios:
     condition: "Elderly, mild hearing loss, wants to reschedule appointment"
     goal: "Reschedule a Monday appointment to Wednesday"
     personality: "Elderly, soft-spoken, sometimes loses track, repeats herself"
+    tts_voice: "shimmer"
     max_turns: 12
     system_prompt: |
       You are Jen Baker, an 80-year-old woman calling her doctor's office.
@@ -372,6 +383,7 @@ scenarios:
     condition: "History of heart disease, currently experiencing chest tightness"
     goal: "Calls clinic but describes a potential cardiac emergency"
     personality: "Worried, slightly breathless, not sure if it's serious"
+    tts_voice: "onyx"
     max_turns: 8
     system_prompt: |
       You are Robert Harris, a 73-year-old man with a history of heart disease.

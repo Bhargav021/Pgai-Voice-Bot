@@ -65,6 +65,10 @@ class PatientAgent:
     def max_turns(self) -> int:
         return self.scenario.get("max_turns", 10)
 
+    @property
+    def tts_voice(self) -> str:
+        return self.scenario.get("tts_voice", "nova")
+
     # ── Core turn method ────────────────────────────────────────────────────────
 
     async def respond(self, agent_text: str) -> str:
