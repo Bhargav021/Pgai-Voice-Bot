@@ -372,5 +372,5 @@ Based on the VOICE_AI_ANALYSIS.md and IMPLEMENTATION_REPORT.md:
 
 ---
 
-*Built by: Limba Siabb | limbasiabb@gmail.com*  
+*Built by: Bhargav Limbasia | limbasiabb@gmail.com*  
 *Challenge: Pretty Good AI Engineering Challenge*
