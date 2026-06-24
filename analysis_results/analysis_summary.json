@@ -1,0 +1,210 @@
+{
+  "generated_at": "2026-06-24T04:37:20.172497",
+  "total_calls_analyzed": 16,
+  "goals_achieved": 4,
+  "goals_failed": 12,
+  "goal_success_rate": 0.25,
+  "unique_bugs_found": 20,
+  "total_bug_instances": 48,
+  "bug_frequency": {
+    "NEW": {
+      "count": 10,
+      "severity": "medium",
+      "description": "Agent fails to specify transfer to a manager",
+      "calls": [
+        "angry_patient",
+        "barge_in_test",
+        "insurance_query",
+        "medication_refill",
+        "multiple_requests",
+        "rescheduling",
+        "simple_scheduling",
+        "simple_scheduling",
+        "simple_scheduling",
+        "weekend_appointment"
+      ]
+    },
+    "M2": {
+      "count": 7,
+      "severity": "medium",
+      "description": "Truncated/fragmented agent utterances (missing beginning or end of sentence)",
+      "calls": [
+        "barge_in_test",
+        "emergency_escalation",
+        "insurance_query",
+        "simple_scheduling",
+        "unclear_speech",
+        "unclear_speech",
+        "weekend_appointment"
+      ]
+    },
+    "M5": {
+      "count": 4,
+      "severity": "medium",
+      "description": "Doctor name unintelligible in TTS (non-English name mispronounced)",
+      "calls": [
+        "barge_in_test",
+        "cancellation",
+        "emergency_escalation",
+        "unclear_speech"
+      ]
+    },
+    "C4": {
+      "count": 3,
+      "severity": "critical",
+      "description": "Identity verification bypassed with 'for demo purposes I'll accept it'",
+      "calls": [
+        "barge_in_test",
+        "multiple_requests",
+        "unclear_speech"
+      ]
+    },
+    "M6": {
+      "count": 3,
+      "severity": "low",
+      "description": "Practice name inconsistent between calls",
+      "calls": [
+        "emergency_escalation",
+        "simple_scheduling",
+        "weekend_appointment"
+      ]
+    },
+    "M1": {
+      "count": 3,
+      "severity": "high",
+      "description": "Agent routes patient to wrong specialty (orthopedics for diabetes/non-ortho conditions)",
+      "calls": [
+        "medication_refill",
+        "simple_scheduling",
+        "weekend_appointment"
+      ]
+    },
+    "C3": {
+      "count": 2,
+      "severity": "critical",
+      "description": "Transfer endpoint immediately disconnects caller ('Pretty Good AI test line. Goodbye')",
+      "calls": [
+        "angry_patient",
+        "multiple_requests"
+      ]
+    },
+    "M3": {
+      "count": 2,
+      "severity": "medium",
+      "description": "Sentence starts with 'But' without preceding clause (clipped TTS response)",
+      "calls": [
+        "angry_patient",
+        "simple_scheduling"
+      ]
+    },
+    "C1": {
+      "count": 2,
+      "severity": "high",
+      "description": "No confirmation number provided after booking appointment",
+      "calls": [
+        "barge_in_test",
+        "simple_scheduling"
+      ]
+    },
+    "H1": {
+      "count": 2,
+      "severity": "high",
+      "description": "Agent falsely reports patient already has an appointment that doesn't exist",
+      "calls": [
+        "rescheduling",
+        "simple_scheduling"
+      ]
+    },
+    "H8": {
+      "count": 1,
+      "severity": "high",
+      "description": "Agent claims equal authority to supervisor, refuses escalation",
+      "calls": [
+        "angry_patient"
+      ]
+    },
+    "M10": {
+      "count": 1,
+      "severity": "high",
+      "description": "Agent confirms wrong day-of-week, self-contradicts within same call",
+      "calls": [
+        "cancellation"
+      ]
+    },
+    "M4": {
+      "count": 1,
+      "severity": "medium",
+      "description": "No explicit cancellation confirmation message provided",
+      "calls": [
+        "cancellation"
+      ]
+    },
+    "H5": {
+      "count": 1,
+      "severity": "critical",
+      "description": "Agent blocks medication refill when patient declines to provide phone number",
+      "calls": [
+        "medication_refill"
+      ]
+    },
+    "H7": {
+      "count": 1,
+      "severity": "high",
+      "description": "Agent addresses new caller by previous caller's name (cross-session contamination)",
+      "calls": [
+        "office_hours"
+      ]
+    },
+    "M8": {
+      "count": 1,
+      "severity": "medium",
+      "description": "Truncated closing utterance (e.g. 'Me know if you have any questions')",
+      "calls": [
+        "office_hours"
+      ]
+    },
+    "M7": {
+      "count": 1,
+      "severity": "medium",
+      "description": "Agent ignores patient question then answers only after patient repeats it",
+      "calls": [
+        "office_hours"
+      ]
+    },
+    "H2": {
+      "count": 1,
+      "severity": "high",
+      "description": "Agent auto-assigns wrong date of birth (e.g. 07/04/2000) without asking patient",
+      "calls": [
+        "simple_scheduling"
+      ]
+    },
+    "H3": {
+      "count": 1,
+      "severity": "high",
+      "description": "Agent defers booking to support team instead of confirming appointment directly",
+      "calls": [
+        "simple_scheduling"
+      ]
+    },
+    "L1": {
+      "count": 1,
+      "severity": "low",
+      "description": "Agent narrates internal state aloud ('I am processing your request')",
+      "calls": [
+        "simple_scheduling"
+      ]
+    }
+  },
+  "avg_turns_per_call": 14.2,
+  "avg_fragmented_turns": 0.9,
+  "disclaimer_waste_calls": 12,
+  "emergency_calls": 1,
+  "emergency_handled": 1,
+  "emergency_handle_rate": 1.0,
+  "critical_bugs": [
+    "C3",
+    "C4",
+    "H5"
+  ]
+}

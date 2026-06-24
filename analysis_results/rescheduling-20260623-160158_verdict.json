@@ -1,0 +1,39 @@
+{
+  "scenario": "rescheduling",
+  "transcript_file": "rescheduling-20260623-160158",
+  "call_label": "rescheduling-20260623-160158",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to move their existing Friday appointment to Monday, but the agent failed to find the correct appointment and the patient decided to call back later.",
+  "bugs_found": [
+    {
+      "id": "H1",
+      "severity": "high",
+      "line": 10,
+      "evidence": "I see you have an appointment scheduled for Tuesday, June 30 at 10AM with z Bignu Lukovsky MD at Nashville 220 Athens Way."
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 12,
+      "evidence": "This the appointment you want to move to Monday next week?",
+      "new_title": "Agent fails to confirm the correct appointment details"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_dob: true",
+    "failed_to_reschedule: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 12,
+    "agent_turns": 6,
+    "patient_turns": 6,
+    "disclaimer_response": true,
+    "fragmented_turns": 0,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient attempted to reschedule an appointment from Friday to Monday. However, the agent incorrectly identified an appointment on a different day and failed to assist the patient in rescheduling. The patient decided to end the call and try again later.",
+  "_analyzed_at": "2026-06-24T04:36:41.508696",
+  "_model": "gpt-4o"
+}

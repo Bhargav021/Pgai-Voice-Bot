@@ -1,0 +1,45 @@
+{
+  "scenario": "office_hours",
+  "transcript_file": "office_hours-20260623-160628",
+  "call_label": "office_hours-20260623-160628",
+  "goal_achieved": true,
+  "goal_summary": "The patient wanted to know the clinic hours and if there was parking available, and they received both pieces of information.",
+  "bugs_found": [
+    {
+      "id": "H7",
+      "severity": "high",
+      "line": 6,
+      "evidence": "Thanks for calling Pivot Point Orthopaedics, part of Pretty Good Am I speaking with Maria?"
+    },
+    {
+      "id": "M8",
+      "severity": "medium",
+      "line": 14,
+      "evidence": "Me know if you have any other questions."
+    },
+    {
+      "id": "M7",
+      "severity": "medium",
+      "line": 10,
+      "evidence": "How else can I help you today?"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_name: true",
+    "provided_office_hours: true",
+    "provided_parking_info: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 12,
+    "agent_turns": 6,
+    "patient_turns": 6,
+    "disclaimer_response": false,
+    "fragmented_turns": 1,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient called to inquire about the clinic's office hours and parking availability. The agent initially addressed the patient by the wrong name but provided the requested information after a follow-up question. The conversation included a fragmented closing statement and an instance where the agent ignored a question before answering it upon repetition.",
+  "_analyzed_at": "2026-06-24T04:36:36.026699",
+  "_model": "gpt-4o"
+}

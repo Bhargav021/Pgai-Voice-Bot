@@ -1,0 +1,54 @@
+{
+  "scenario": "unclear_speech",
+  "transcript_file": "unclear_speech-20260623-161529",
+  "call_label": "unclear_speech-20260623-161529",
+  "goal_achieved": true,
+  "goal_summary": "The patient wanted to reschedule a Monday appointment to Wednesday and successfully rescheduled it to July 1 at 10:30AM.",
+  "bugs_found": [
+    {
+      "id": "C4",
+      "severity": "high",
+      "line": 12,
+      "evidence": "purposes, I'll accept it.",
+      "new_title": ""
+    },
+    {
+      "id": "M5",
+      "severity": "medium",
+      "line": 20,
+      "evidence": "procedure with Doobie Hauser.",
+      "new_title": ""
+    },
+    {
+      "id": "M2",
+      "severity": "medium",
+      "line": 14,
+      "evidence": "Let me check your upcoming",
+      "new_title": ""
+    },
+    {
+      "id": "M2",
+      "severity": "medium",
+      "line": 24,
+      "evidence": "July 1 at 10:30AM in Nashville with du v",
+      "new_title": ""
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_dob: true",
+    "appointment_rescheduled: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 24,
+    "agent_turns": 12,
+    "patient_turns": 12,
+    "disclaimer_response": false,
+    "fragmented_turns": 3,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient called to reschedule an appointment from Monday to Wednesday. Despite some unclear speech and fragmented agent responses, the appointment was successfully rescheduled to July 1 at 10:30AM. Several bugs were identified, including identity verification bypass and mispronunciation of a doctor's name.",
+  "_analyzed_at": "2026-06-24T04:37:14.501464",
+  "_model": "gpt-4o"
+}

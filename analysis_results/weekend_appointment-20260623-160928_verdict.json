@@ -1,0 +1,51 @@
+{
+  "scenario": "weekend_appointment",
+  "transcript_file": "weekend_appointment-20260623-160928",
+  "call_label": "weekend_appointment-20260623-160928",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to book a Saturday dermatology appointment but did not achieve this goal.",
+  "bugs_found": [
+    {
+      "id": "M6",
+      "severity": "medium",
+      "line": 6,
+      "evidence": "Pivot Point Orthopaedics, part of",
+      "new_title": "Inconsistent practice name"
+    },
+    {
+      "id": "M1",
+      "severity": "high",
+      "line": 6,
+      "evidence": "Thanks for calling Pivot Point Orthopaedics, part of",
+      "new_title": "Agent routes patient to wrong specialty"
+    },
+    {
+      "id": "M2",
+      "severity": "medium",
+      "line": 10,
+      "evidence": "Not dermatology. We're open Monday through Friday and do not offer Saturday",
+      "new_title": "Truncated agent utterance"
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 14,
+      "evidence": "You like, I can help you find a 9AM slot on a weekday.",
+      "new_title": "Incomplete sentence structure"
+    }
+  ],
+  "pgai_behaviors": [],
+  "conversation_quality": {
+    "total_turns": 14,
+    "agent_turns": 7,
+    "patient_turns": 7,
+    "disclaimer_response": true,
+    "fragmented_turns": 0,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient attempted to book a Saturday dermatology appointment but was routed to an orthopedic clinic instead. The agent failed to provide a suitable appointment time and the conversation ended without achieving the patient's goal. Several issues were noted, including inconsistent practice naming, routing to the wrong specialty, and truncated agent responses.",
+  "_analyzed_at": "2026-06-24T04:37:20.169415",
+  "_model": "gpt-4o"
+}

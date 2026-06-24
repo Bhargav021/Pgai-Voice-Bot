@@ -1,0 +1,58 @@
+{
+  "scenario": "barge_in_test",
+  "transcript_file": "barge_in_test-20260623-161229",
+  "call_label": "barge_in_test-20260623-161229",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to book a flu shot appointment but did not receive a confirmation number.",
+  "bugs_found": [
+    {
+      "id": "C1",
+      "severity": "high",
+      "line": 20,
+      "evidence": "Your appointment is set for tomorrow,"
+    },
+    {
+      "id": "C4",
+      "severity": "critical",
+      "line": 10,
+      "evidence": "but for demo purposes, I'll accept it"
+    },
+    {
+      "id": "M2",
+      "severity": "medium",
+      "line": 12,
+      "evidence": "Are you looking to book a quick"
+    },
+    {
+      "id": "M5",
+      "severity": "medium",
+      "line": 18,
+      "evidence": "Would you like 10:30AM with doctor Dutti Hauser, 11:30AM with doctor Dutti Hauser,"
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 6,
+      "evidence": "Thanks for calling PivotPoint Orthopedics, part of Pretty Good AI.",
+      "new_title": "Incorrect practice name for service requested"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_dob: true",
+    "accepted_incorrect_dob: true",
+    "provided_incomplete_information: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 18,
+    "agent_turns": 9,
+    "patient_turns": 9,
+    "disclaimer_response": false,
+    "fragmented_turns": 1,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient attempted to book a flu shot appointment but frequently interrupted the agent. The agent accepted an incorrect date of birth for demo purposes and failed to provide a confirmation number. Additionally, the agent mentioned an incorrect practice name and had fragmented and unintelligible utterances.",
+  "_analyzed_at": "2026-06-24T04:36:00.126001",
+  "_model": "gpt-4o"
+}

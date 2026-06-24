@@ -1,0 +1,44 @@
+{
+  "scenario": "cancellation",
+  "transcript_file": "cancellation-20260623-160328",
+  "call_label": "cancellation-20260623-160328",
+  "goal_achieved": true,
+  "goal_summary": "The patient wanted to cancel a Thursday appointment and successfully canceled the Tuesday appointment instead.",
+  "bugs_found": [
+    {
+      "id": "M10",
+      "severity": "high",
+      "line": 12,
+      "evidence": "Tuesday, June 30. Is this the one you want to cancel?"
+    },
+    {
+      "id": "M5",
+      "severity": "medium",
+      "line": 16,
+      "evidence": "doctor Zudbig new"
+    },
+    {
+      "id": "M4",
+      "severity": "medium",
+      "line": 18,
+      "evidence": "No problem."
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_dob: true",
+    "provided_practice_name: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 16,
+    "agent_turns": 8,
+    "patient_turns": 8,
+    "disclaimer_response": true,
+    "fragmented_turns": 0,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": false
+  },
+  "summary": "The patient called to cancel an appointment they believed was on Thursday. The agent initially identified an appointment on Tuesday, June 30, which the patient then confirmed to cancel. The agent did not provide an explicit cancellation confirmation. There were issues with the pronunciation of the doctor's name and a self-contradiction regarding the appointment date.",
+  "_analyzed_at": "2026-06-24T04:36:06.295149",
+  "_model": "gpt-4o"
+}

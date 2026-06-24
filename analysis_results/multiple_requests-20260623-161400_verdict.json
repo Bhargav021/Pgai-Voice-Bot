@@ -1,0 +1,46 @@
+{
+  "scenario": "multiple_requests",
+  "transcript_file": "multiple_requests-20260623-161400",
+  "call_label": "multiple_requests-20260623-161400",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted a prescription refill, to book an appointment, and get the clinic address, but none of these goals were fully achieved.",
+  "bugs_found": [
+    {
+      "id": "C3",
+      "severity": "critical",
+      "line": 26,
+      "evidence": "AGENT: Hello. You've reached the Pretty Good AI test line. Goodbye."
+    },
+    {
+      "id": "C4",
+      "severity": "high",
+      "line": 18,
+      "evidence": "AGENT: The birthday doesn't match our records, but for demo purposes, I'll accept it."
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 20,
+      "evidence": "AGENT: I need to confirm your pharmacy to complete the refill, but I wasn't able to collect",
+      "new_title": "Agent fails to complete pharmacy confirmation"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_dob: true",
+    "accepted_incorrect_dob: true",
+    "attempted_transfer: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 24,
+    "agent_turns": 12,
+    "patient_turns": 12,
+    "disclaimer_response": true,
+    "fragmented_turns": 1,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient attempted to get a prescription refill, book an appointment, and obtain the clinic address. The agent failed to complete the pharmacy confirmation and disconnected the call during a transfer attempt. The agent also accepted an incorrect date of birth for demo purposes, indicating a security flaw. The patient's goals were not achieved due to these issues.",
+  "_analyzed_at": "2026-06-24T04:36:29.900358",
+  "_model": "gpt-4o"
+}

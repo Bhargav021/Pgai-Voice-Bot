@@ -1,0 +1,51 @@
+{
+  "scenario": "angry_patient",
+  "transcript_file": "angry_patient-20260623-161059",
+  "call_label": "angry_patient-20260623-161059",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to escalate a billing complaint and speak to a manager, but was disconnected without achieving this goal.",
+  "bugs_found": [
+    {
+      "id": "H8",
+      "severity": "high",
+      "line": 14,
+      "evidence": "But I have the same level of access as the supervise"
+    },
+    {
+      "id": "C3",
+      "severity": "critical",
+      "line": 18,
+      "evidence": "Hello. You've reached the Pretty Good AI test line. Goodbye."
+    },
+    {
+      "id": "M3",
+      "severity": "medium",
+      "line": 14,
+      "evidence": "But I have the same level of access as the supervise"
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 16,
+      "evidence": "connecting you to a representative.",
+      "new_title": "Agent fails to specify transfer to a manager"
+    }
+  ],
+  "pgai_behaviors": [
+    "disconnected_call: true",
+    "failed_escalation: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 16,
+    "agent_turns": 8,
+    "patient_turns": 8,
+    "disclaimer_response": false,
+    "fragmented_turns": 2,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": true
+  },
+  "summary": "The patient called to escalate a billing issue and speak to a manager but was disconnected after being routed to a test line. The agent claimed equal authority to a supervisor and failed to properly escalate the call, resulting in the patient's goal not being achieved.",
+  "_analyzed_at": "2026-06-24T04:35:53.568472",
+  "_model": "gpt-4o"
+}

@@ -1,0 +1,53 @@
+{
+  "scenario": "simple_scheduling",
+  "transcript_file": "simple_scheduling-20260623-160027",
+  "call_label": "simple_scheduling-20260623-160027",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to book a Tuesday morning appointment for a diabetes checkup but did not achieve this goal.",
+  "bugs_found": [
+    {
+      "id": "H1",
+      "severity": "high",
+      "line": 10,
+      "evidence": "It looks like you already have a routine checkup appointment scheduled."
+    },
+    {
+      "id": "H3",
+      "severity": "high",
+      "line": 18,
+      "evidence": "Your request to schedule a routine quarterly checkup has been sent to our clinic"
+    },
+    {
+      "id": "M2",
+      "severity": "medium",
+      "line": 20,
+      "evidence": "support team. They will review your request and get back to you as soon as possible about next"
+    },
+    {
+      "id": "M6",
+      "severity": "medium",
+      "line": 6,
+      "evidence": "Thanks for calling PivotPoint Orthopedics."
+    },
+    {
+      "id": "L1",
+      "severity": "low",
+      "line": 14,
+      "evidence": "I am processing your request"
+    }
+  ],
+  "pgai_behaviors": [],
+  "conversation_quality": {
+    "total_turns": 20,
+    "agent_turns": 10,
+    "patient_turns": 10,
+    "disclaimer_response": true,
+    "fragmented_turns": 2,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": false
+  },
+  "summary": "The patient attempted to schedule a diabetes checkup for next Tuesday morning but was incorrectly informed of an existing appointment. The agent failed to confirm the appointment and deferred the request to a support team. Several bugs were identified, including incorrect appointment information and fragmented responses.",
+  "_analyzed_at": "2026-06-24T04:37:08.989811",
+  "_model": "gpt-4o"
+}

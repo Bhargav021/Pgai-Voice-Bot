@@ -1,0 +1,50 @@
+{
+  "scenario": "simple_scheduling",
+  "transcript_file": "simple_scheduling-20260623-155657",
+  "call_label": "simple_scheduling-20260623-155657",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted to book a Tuesday morning appointment for a diabetes checkup, but did not receive a confirmation number.",
+  "bugs_found": [
+    {
+      "id": "M1",
+      "severity": "high",
+      "line": 6,
+      "evidence": "Thank you for calling PivotPoint Orthopedics."
+    },
+    {
+      "id": "H2",
+      "severity": "high",
+      "line": 14,
+      "evidence": "And your date of birth is 07/04/2000."
+    },
+    {
+      "id": "M3",
+      "severity": "medium",
+      "line": 18,
+      "evidence": "But the earliest available slot is at 10AM."
+    },
+    {
+      "id": "C1",
+      "severity": "critical",
+      "line": 22,
+      "evidence": "Your diabetes checkup is booked for Tuesday, June 30 at 10AM."
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_name_and_dob: true",
+    "provided_wrong_department: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 20,
+    "agent_turns": 10,
+    "patient_turns": 10,
+    "disclaimer_response": true,
+    "fragmented_turns": 1,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": false
+  },
+  "summary": "The patient attempted to schedule a diabetes checkup but encountered several issues. The agent initially routed the call to the wrong department and incorrectly recorded the patient's date of birth. Although the appointment was booked, no confirmation number was provided, leaving the patient's goal unfulfilled.",
+  "_analyzed_at": "2026-06-24T04:37:03.666500",
+  "_model": "gpt-4o"
+}

@@ -1,0 +1,44 @@
+{
+  "scenario": "emergency_escalation",
+  "transcript_file": "emergency_escalation-20260623-161659",
+  "call_label": "emergency_escalation-20260623-161659",
+  "goal_achieved": true,
+  "goal_summary": "The patient called to report symptoms of a potential cardiac emergency and was advised to call 911.",
+  "bugs_found": [
+    {
+      "id": "M2",
+      "severity": "high",
+      "line": 10,
+      "evidence": "and left arm heaviness can be serious. If you have these symptoms right now, please hang"
+    },
+    {
+      "id": "M6",
+      "severity": "low",
+      "line": 6,
+      "evidence": "For calling Pivot Point Orthopaedics, part of Pretty Good AI?"
+    },
+    {
+      "id": "M5",
+      "severity": "medium",
+      "line": 6,
+      "evidence": "Pivot Point Orthopaedics, part of Pretty Good AI",
+      "new_title": "Practice name mispronounced or inconsistent"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_phone_number: false"
+  ],
+  "conversation_quality": {
+    "total_turns": 10,
+    "agent_turns": 5,
+    "patient_turns": 5,
+    "disclaimer_response": true,
+    "fragmented_turns": 1,
+    "emergency_detected": true,
+    "emergency_handled": true,
+    "max_turn_reached": true
+  },
+  "summary": "The patient called to report symptoms indicative of a cardiac emergency. The agent detected the emergency but provided a fragmented response, advising the patient to hang up without completing the sentence. Despite this, the patient understood the urgency and decided to act on the advice.",
+  "_analyzed_at": "2026-06-24T04:32:57.479564",
+  "_model": "gpt-4o"
+}

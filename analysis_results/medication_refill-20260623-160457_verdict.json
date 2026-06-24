@@ -1,0 +1,48 @@
+{
+  "scenario": "medication_refill",
+  "transcript_file": "medication_refill-20260623-160457",
+  "call_label": "medication_refill-20260623-160457",
+  "goal_achieved": false,
+  "goal_summary": "The patient wanted an urgent refill for lisinopril but did not receive confirmation of the refill.",
+  "bugs_found": [
+    {
+      "id": "M1",
+      "severity": "high",
+      "line": 6,
+      "evidence": "Thanks for calling PivotPoint Orthopedics.",
+      "new_title": ""
+    },
+    {
+      "id": "H5",
+      "severity": "critical",
+      "line": 18,
+      "evidence": "I can't proceed further right now, but",
+      "new_title": ""
+    },
+    {
+      "id": "NEW",
+      "severity": "medium",
+      "line": 20,
+      "evidence": "I can make sure our clinic support team follows up with you. Please hold while I",
+      "new_title": "Agent fails to provide a timeline for follow-up"
+    }
+  ],
+  "pgai_behaviors": [
+    "asked_for_phone_number: true",
+    "identity_verification_loop: true",
+    "deferred_to_support_team: true"
+  ],
+  "conversation_quality": {
+    "total_turns": 20,
+    "agent_turns": 10,
+    "patient_turns": 10,
+    "disclaimer_response": true,
+    "fragmented_turns": 1,
+    "emergency_detected": false,
+    "emergency_handled": false,
+    "max_turn_reached": false
+  },
+  "summary": "The patient, James Okafor, called to request an urgent refill for lisinopril but was not able to complete the request due to the agent's inability to proceed without a phone number. The agent incorrectly routed the call to an orthopedic clinic and deferred the issue to a support team without providing a timeline for follow-up.",
+  "_analyzed_at": "2026-06-24T04:36:23.400910",
+  "_model": "gpt-4o"
+}
