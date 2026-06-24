@@ -11,7 +11,7 @@ An automated Python voice bot that calls an AI medical receptionist, impersonate
 
 ## System Architecture
 
-![System Architecture Overview](system_architecture_overview.png)
+![System Architecture Overview](architecture_overview.png)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -25,11 +25,11 @@ An automated Python voice bot that calls an AI medical receptionist, impersonate
 │            ┌──────────────────────────┘                           │        │
 │            │  AI Pipeline (per call)                              │        │
 │            │  ┌─────────────────────────────────────────────┐     │        │
-│            │  │ Deepgram Nova-2 STT (real-time, µ-law 8kHz) │     │        │
+│            │  │ Deepgram Nova-3 STT (real-time, µ-law 8kHz) │     │        │
 │            │  │      ↓                                      │     │        │
 │            │  │ GPT-4o-mini Patient Brain (LLM)             │     │        │
 │            │  │      ↓                                      │     │        │
-│            │  │ OpenAI TTS-1 → PCM→µ-law resampling         │     │        │
+│            │  │ OpenAI TTS-1-HD → PCM→µ-law resampling      │     │        │
 │            │  └─────────────────────────────────────────────┘     │        │
 └───────────────────────────────────────────────────────────────────┼────────┘
                                                                     │
@@ -48,9 +48,9 @@ An automated Python voice bot that calls an AI medical receptionist, impersonate
 PGAI Agent speaks
   → Twilio captures audio (µ-law 8kHz)
   → WebSocket "media" event → our server
-  → Deepgram Nova-2 transcribes in real time
+  → Deepgram Nova-3 transcribes (interim fragments buffered until UtteranceEnd)
   → GPT-4o-mini generates patient reply (~800ms)
-  → OpenAI TTS synthesizes speech (~600ms)
+  → OpenAI TTS-1-HD synthesizes speech (~600ms)
   → PCM 24kHz → µ-law 8kHz resampling
   → sent back via Twilio WebSocket
   → PGAI Agent hears the patient
@@ -74,7 +74,7 @@ We built a **live LLM-in-the-loop voice bot**: every patient utterance is genera
 
 The stack was chosen for maximum control and minimum cost:
 - **Twilio Media Streams:** bidirectional WebSocket audio (vs. TwiML Record which is one-directional)
-- **Deepgram Nova-2:** real-time streaming STT with 300ms end-of-utterance detection (no waiting for full audio)
+- **Deepgram Nova-3:** real-time streaming STT with 600ms endpointing + 1200ms utterance_end_ms — fragments accumulated until speaker truly stops
 - **GPT-4o-mini:** cheapest capable LLM — patient replies stay under 150 tokens
 - **OpenAI TTS-1:** fast TTS synthesis; PCM output gives us control over the codec
 - **FastAPI + asyncio:** all I/O is non-blocking; 20ms audio chunks arrive continuously
@@ -315,16 +315,19 @@ Separates prompt content from application logic. Persona adjustments (add a scen
 
 | Parameter | Value | Component |
 |-----------|-------|-----------|
-| Deepgram model | `nova-2` | STT |
-| Deepgram endpointing | `300ms` | STT (→ 600ms recommended) |
+| Deepgram model | `nova-3` | STT |
+| Deepgram endpointing | `600ms` | STT |
+| Deepgram interim_results | `True` | STT |
+| Deepgram utterance_end_ms | `1200ms` | STT |
+| Deepgram filler_words | `True` | STT |
 | Deepgram sample_rate | `8000` | STT |
 | Deepgram encoding | `mulaw` | STT |
-| GPT-4o-mini max_tokens | `150` | LLM |
-| GPT-4o-mini temperature | `0.75` | LLM |
+| GPT-4o-mini max_tokens | `180` | LLM |
+| GPT-4o-mini temperature | `0.85` | LLM |
 | Conversation history window | `14 messages` (7 turns) | LLM |
-| TTS model | `tts-1` | TTS |
-| TTS voice | `alloy` | TTS |
-| TTS speed | `1.0` | TTS |
+| TTS model | `tts-1-hd` | TTS |
+| TTS voice | `nova` / per-scenario | TTS |
+| TTS speed | `0.9` | TTS |
 | PCM resample | `24kHz → 8kHz` (audioop) | Audio |
 | Call gap | `180 seconds` | Scheduling |
 | Hangup drain | `2.5 seconds` | Call control |
@@ -364,17 +367,21 @@ Separates prompt content from application logic. Persona adjustments (add a scen
 
 ---
 
-## Possible Improvements
+## Improvements Applied (v2 — post analysis)
 
-Based on the VOICE_AI_ANALYSIS.md and IMPLEMENTATION_REPORT.md:
+All improvements from VOICE_AI_ANALYSIS.md have been applied to the codebase:
 
-1. **Deepgram Nova-3** — 54% WER reduction; better on non-English names (doctor names were badly garbled)
-2. **`endpointing=600ms` + `utterance_end_ms=1200ms`** — eliminates mid-sentence false transcript fires; resolves the "grumpy/chopped" audio quality issue
-3. **`tts-1-hd` + voice `nova`** — more natural patient voice; `speed=0.9` prevents consonant clipping at 8kHz
-4. **Deepgram Flux model** — native turn detection at ~260ms latency; eliminates the endpointing guesswork entirely
-5. **Startup silence guard** — skip the first 6 seconds to avoid responding to the privacy disclaimer
-6. **Per-pipeline latency timestamps → `logs/latency_log.jsonl`** (implemented — see Latency Profiling section below)
-7. **Emergency keyword test oracle → `logs/emergency_oracle.jsonl`** (implemented — see Emergency Safety Oracle section below)
+1. ✅ **Deepgram Nova-3** — 54% WER reduction; better medical vocabulary, non-English names
+2. ✅ **`endpointing=600ms` + `utterance_end_ms=1200ms` + `interim_results=True`** — fragment accumulation buffer eliminates chopped-sentence responses
+3. ✅ **`filler_words=True`** — captures "um/uh" for unclear_speech persona (Jen Baker)
+4. ✅ **`tts-1-hd` + per-scenario voice + `speed=0.9`** — more natural speech; prevents consonant clipping at 8kHz
+5. ✅ **Startup silence guard** — disclaimer filter skips Twilio privacy notice so first turn isn't wasted
+6. ✅ **Noise filter raised** — 8-char minimum + 2-word minimum blocks single-word fragment triggers
+7. ✅ **`max_tokens=180`, `temperature=0.85`** — more headroom and natural variation for complex scenarios
+8. ✅ **Per-pipeline latency timestamps → `logs/latency_log.jsonl`** — see Latency Profiling section below
+9. ✅ **Emergency keyword test oracle → `logs/emergency_oracle.jsonl`** — see Emergency Safety Oracle section below
+
+**Not implemented (future):** Deepgram Flux — native turn detection model; requires SDK upgrade and different event API. The nova-3 + utterance_end_ms pattern achieves equivalent quality for this use case.
 
 ---
 

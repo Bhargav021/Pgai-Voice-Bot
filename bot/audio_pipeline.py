@@ -105,6 +105,7 @@ class AudioPipeline:
                 endpointing=600,           # 600ms silence → is_final; combined with utterance_end_ms
                 interim_results=True,      # required: enables UtteranceEnd event pipeline
                 utterance_end_ms="1200",   # flush buffer after 1200ms word-timestamp gap (str required)
+                filler_words=True,         # capture "um", "uh" — important for unclear_speech persona
             )
             success = await conn.start(options)
             if success is False:

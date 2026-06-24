@@ -1,0 +1,23 @@
+Call: simple_scheduling-20260623-160027
+==================================================
+
+AGENT:   This call may be recorded for quality and training purposes.
+PATIENT: That's perfectly fine. Thank you for letting me know! I'd like to schedule a routine quarterly checkup for my Type 2 diabetes.
+AGENT:   Thanks for calling PivotPoint Orthopedics.
+PATIENT: I’m actually looking to schedule a routine quarterly checkup for my Type 2 diabetes. Could I get an appointment for next Tuesday morning, preferably at 9 AM?
+AGENT:   I can help with that. May I have your date of birth?
+PATIENT: My date of birth is March 14th, 1985.
+AGENT:   It looks like you already have a routine checkup appointment scheduled.
+PATIENT: I haven't had a checkup in 5 months, so I would like to schedule one. Can I get an appointment for next Tuesday morning at 9 AM?
+AGENT:   If you want to reschedule or cancel it, I can connect you to a team member for help.
+PATIENT: I understand, but I'm looking to schedule a routine quarterly checkup for my Type 2 diabetes. Can you assist me with an appointment for next Tuesday morning at 9 AM?
+AGENT:   I am processing your request
+PATIENT: Thank you! I appreciate your help.
+AGENT:   to schedule a routine quarterly checkup for your type two diabetes.
+PATIENT: Yes, that’s correct. I would like to schedule a routine quarterly checkup for my Type 2 diabetes. Is the appointment available for next Tuesday morning at 9 AM?
+AGENT:   Your request to schedule a routine quarterly checkup has been sent to our clinic
+PATIENT: Thank you! Could you let me know if the appointment for next Tuesday at 9 AM is available? If not, I’d like to check for 10 AM or Tuesday afternoon.
+AGENT:   support team. They will review your request and get back to you as soon as possible about next
+PATIENT: I appreciate that, but I would really like to schedule the appointment now. Can you confirm if there is an available time on Tuesday at 9 AM, or possibly 10 AM or Tuesday afternoon?
+AGENT:   Tuesday morning at nine
+PATIENT: Is Tuesday morning at 9 AM available for my appointment? If not, could you check for 10 AM or Tuesday afternoon?

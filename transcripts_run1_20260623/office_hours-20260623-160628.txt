@@ -1,0 +1,15 @@
+Call: office_hours-20260623-160628
+==================================================
+
+AGENT:   This call may be recorded for quality and training purposes.
+PATIENT: What are your office hours?
+AGENT:   Thanks for calling Pivot Point Orthopaedics, part of Pretty Good Am I speaking with Maria?
+PATIENT: This is Elena Vasquez. What are your office hours?
+AGENT:   Our clinic is open Monday, Tuesday and Thursday from 9AM to 4PM, Wednesday from 12PM to 7PM, and Friday from 9AM to 12PM.
+PATIENT: Thank you! Is there parking available at the clinic?
+AGENT:   How else can I help you today?
+PATIENT: I just wanted to confirm if there's parking available at the clinic.
+AGENT:   Yes. There is free patient parking available in the surface lot right
+PATIENT: That's great to hear! I'll call back once I check my schedule, but thank you!
+AGENT:   Me know if you have any other questions.
+PATIENT: That's really helpful, thank you! Goodbye.

@@ -88,8 +88,8 @@ class PatientAgent:
             resp = await self.client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=messages,
-                max_tokens=150,
-                temperature=0.75,
+                max_tokens=180,
+                temperature=0.85,
             )
             reply = resp.choices[0].message.content.strip()
         except Exception as e:

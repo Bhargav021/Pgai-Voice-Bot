@@ -342,7 +342,10 @@ async def media_stream(ws: WebSocket):
 # INTERNAL HELPERS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-_NOISE_WORDS = {"um", "uh", "ah", "hmm", "mhm", "hm", "oh", "okay", "ok", "yeah", "yep"}
+_NOISE_WORDS = {
+    "um", "uh", "ah", "hmm", "mhm", "hm", "oh", "okay", "ok",
+    "yeah", "yep", "sure", "right", "alright", "got it", "yes", "no",
+}
 
 # Phrases that identify the Twilio recording disclaimer — skip to avoid wasting the first turn
 _DISCLAIMER_PHRASES = (
@@ -382,9 +385,9 @@ async def _handle_transcript(
         log.info(f"[FILTER] Skipping privacy disclaimer: '{stripped[:80]}'")
         return
 
-    # ── Noise filter — skip filler words and empty fragments ─────────────────
-    words = stripped.lower().split()
-    if len(stripped) < 4 or (len(words) == 1 and words[0] in _NOISE_WORDS):
+    # ── Noise filter — skip filler words and short fragments ─────────────────
+    words = [w for w in stripped.lower().split() if w not in _NOISE_WORDS]
+    if len(stripped) < 8 or len(words) < 2:
         log.info(f"[FILTER] Dropping short/noise transcript: '{stripped}'")
         return
 
