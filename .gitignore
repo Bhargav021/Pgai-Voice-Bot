@@ -25,3 +25,6 @@ logs/*.log
 .DS_Store
 Thumbs.db
 desktop.ini
+
+implementation_report.md
+VOICE_AI_ANALYSIS.md
