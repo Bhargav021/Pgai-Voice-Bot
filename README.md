@@ -487,7 +487,7 @@ After each call, if any emergency assertions were made, a JSON entry is written 
 Bug C5 in the bug report — "Emergency 911 advice truncated mid-sentence" — was discovered by listening to recordings and reading transcripts. The oracle automates this discovery: it would have produced `oracle_fail: true` without any human review, in real time during the call. For a healthcare AI, this kind of deterministic safety assertion is not optional — it is the difference between a QA pass and a liability event.
 
 ---
-### Find the recording and transcripts here: [Drive] ([https://drive.google.com/drive/folders/1_SMONbMZdoXMJlnEC747MkzMpggKX_S-?usp=drive_link](https://drive.google.com/drive/folders/1_SMONbMZdoXMJlnEC747MkzMpggKX_S-?usp=sharing))
+### Find the recording and transcripts here: [Drive]([https://drive.google.com/drive/folders/1_SMONbMZdoXMJlnEC747MkzMpggKX_S-?usp=drive_link](https://drive.google.com/drive/folders/1_SMONbMZdoXMJlnEC747MkzMpggKX_S-?usp=sharing))
 
 *Built by: Bhargav Limbasia | limbasiabb@gmail.com*  
 *Challenge: Pretty Good AI Engineering Challenge*
