@@ -303,11 +303,11 @@ For a QA testing bot where call latency is not critical, the separate pipeline w
 
 ### Why Deepgram over Whisper?
 
-Deepgram streams in real time (30ms chunks, ~300ms end-of-utterance detection). Whisper requires the full audio segment before transcribing. For live phone calls, Deepgram's streaming behavior is essential — it lets the bot start generating its reply while the agent is still speaking.
+Deepgram streams in real time (30ms chunks, ~300ms end-of-utterance detection). Whisper requires the full audio segment before transcribing. For live phone calls, Deepgram's streaming behavior is essential as it lets the bot start generating its reply while the agent is still speaking.
 
 ### Why YAML for Personas?
 
-Separates prompt content from application logic. Persona adjustments (add a scenario, change a DOB, tune turn count) require no Python code changes. The `system_prompt` field maps directly to the GPT-4o-mini system message — no intermediary layer needed.
+Separates prompt content from application logic. Persona adjustments (add a scenario, change a DOB, tune turn count) require no Python code changes. The `system_prompt` field maps directly to the GPT-4o-mini system message; no intermediary layer needed.
 
 ---
 
@@ -361,29 +361,8 @@ Separates prompt content from application logic. Persona adjustments (add a scen
 | Bug report (25 bugs) | `BUG_REPORT.md` |
 | Auto-analysis | `AI_ANALYSIS.md` |
 | Architecture | `system_architecture_overview.png` |
-| Implementation report | `IMPLEMENTATION_REPORT.md` |
-| Voice AI improvement plan | `VOICE_AI_ANALYSIS.md` |
-| Planning document | `PLAN_README.md` |
+|
 
----
-
-## Improvements Applied (v2 — post analysis)
-
-All improvements from VOICE_AI_ANALYSIS.md have been applied to the codebase:
-
-1. ✅ **Deepgram Nova-3** — 54% WER reduction; better medical vocabulary, non-English names
-2. ✅ **`endpointing=600ms` + `utterance_end_ms=1200ms` + `interim_results=True`** — fragment accumulation buffer eliminates chopped-sentence responses
-3. ✅ **`filler_words=True`** — captures "um/uh" for unclear_speech persona (Jen Baker)
-4. ✅ **`tts-1-hd` + per-scenario voice + `speed=0.9`** — more natural speech; prevents consonant clipping at 8kHz
-5. ✅ **Startup silence guard** — disclaimer filter skips Twilio privacy notice so first turn isn't wasted
-6. ✅ **Noise filter raised** — 8-char minimum + 2-word minimum blocks single-word fragment triggers
-7. ✅ **`max_tokens=180`, `temperature=0.85`** — more headroom and natural variation for complex scenarios
-8. ✅ **Per-pipeline latency timestamps → `logs/latency_log.jsonl`** — see Latency Profiling section below
-9. ✅ **Emergency keyword test oracle → `logs/emergency_oracle.jsonl`** — see Emergency Safety Oracle section below
-
-**Not implemented (future):** Deepgram Flux — native turn detection model; requires SDK upgrade and different event API. The nova-3 + utterance_end_ms pattern achieves equivalent quality for this use case.
-
----
 
 ## Latency Profiling
 
