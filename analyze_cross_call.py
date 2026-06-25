@@ -16,6 +16,9 @@ Usage:
     python analyze_cross_call.py --summary-only         # just the counts
 """
 
+from __future__ import annotations
+
+import io
 import re
 import sys
 import json
@@ -27,9 +30,9 @@ from datetime import datetime
 from typing import NamedTuple
 
 # Force UTF-8 output on Windows (avoids CP1252 UnicodeEncodeError)
-if hasattr(sys.stdout, "reconfigure"):
+if isinstance(sys.stdout, io.TextIOWrapper):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-if hasattr(sys.stderr, "reconfigure"):
+if isinstance(sys.stderr, io.TextIOWrapper):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(message)s")

@@ -13,6 +13,8 @@ Phase 8: Emergency keyword pre-LLM test oracle → logs/emergency_oracle.jsonl
 All phases are wired in. Phases 1-3 gracefully degrade to no-ops if API keys are missing.
 """
 
+from __future__ import annotations
+
 import os
 import json
 import time
