@@ -173,7 +173,7 @@ async def incoming_call(request: Request):
         url=f"{NGROK_URL}/incoming-call?scenario=simple_scheduling"
     """
     form     = await request.form()
-    call_sid = form.get("CallSid", "unknown")
+    call_sid = str(form.get("CallSid", "unknown"))
     scenario = request.query_params.get("scenario", "simple_scheduling")
 
     log.info(f"TwiML requested — CallSid={call_sid}, scenario={scenario}")
@@ -209,10 +209,10 @@ async def recording_callback(request: Request):
     We download and save it to recordings/<call_label>.mp3.
     """
     form          = await request.form()
-    recording_url = form.get("RecordingUrl", "")
-    call_sid      = form.get("CallSid", "unknown")
-    duration      = form.get("RecordingDuration", "0")
-    status        = form.get("RecordingStatus", "")
+    recording_url = str(form.get("RecordingUrl", ""))
+    call_sid      = str(form.get("CallSid", "unknown"))
+    duration      = str(form.get("RecordingDuration", "0"))
+    status        = str(form.get("RecordingStatus", ""))
 
     log.info(f"Recording callback — CallSid={call_sid}, Status={status}, Duration={duration}s")
 
@@ -230,8 +230,8 @@ async def recording_callback(request: Request):
 async def call_status(request: Request):
     """Optional: logs Twilio call lifecycle events (ringing, answered, completed)."""
     form   = await request.form()
-    status = form.get("CallStatus", "unknown")
-    sid    = form.get("CallSid", "unknown")
+    status = str(form.get("CallStatus", "unknown"))
+    sid    = str(form.get("CallSid", "unknown"))
     log.info(f"Call status update — CallSid={sid}, Status={status}")
     return Response(status_code=204)
 
