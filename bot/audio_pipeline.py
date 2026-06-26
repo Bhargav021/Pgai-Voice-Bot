@@ -102,9 +102,9 @@ class AudioPipeline:
                 encoding="mulaw",          # Twilio sends µ-law
                 sample_rate=8000,          # Twilio sends 8 kHz
                 channels=1,
-                endpointing=600,           # 600ms silence → is_final; combined with utterance_end_ms
+                endpointing=1500,          # 1500ms: prevents mid-sentence splits at comma pauses
                 interim_results=True,      # required: enables UtteranceEnd event pipeline
-                utterance_end_ms="1200",   # flush buffer after 1200ms word-timestamp gap (str required)
+                utterance_end_ms="2000",   # 2s word-gap before flush; phone speech has longer pauses
                 filler_words=True,         # capture "um", "uh" — important for unclear_speech persona
             )
             success = await conn.start(options)

@@ -562,6 +562,8 @@ async def _cleanup(state: dict) -> None:
     """
     if not state:
         return
+    # Block late Deepgram events from triggering GPT/TTS after the call ends
+    state["hangup_requested"] = True
     if "pipeline" in state:
         await state["pipeline"].close()
     if state.get("transcript"):

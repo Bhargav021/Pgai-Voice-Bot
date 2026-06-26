@@ -26,6 +26,7 @@ Usage:
     python generate_scenarios.py --list-presets
 """
 
+import io
 import os
 import sys
 import yaml
@@ -40,9 +41,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Force UTF-8 output on Windows (avoids CP1252 UnicodeEncodeError)
-if hasattr(sys.stdout, "reconfigure"):
+if isinstance(sys.stdout, io.TextIOWrapper):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-if hasattr(sys.stderr, "reconfigure"):
+if isinstance(sys.stderr, io.TextIOWrapper):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -267,7 +268,7 @@ def generate_scenario(
         max_tokens=1200,
     )
 
-    raw = response.choices[0].message.content.strip()
+    raw = (response.choices[0].message.content or "").strip()
 
     # Strip markdown fences if GPT wrapped in ```yaml ... ```
     if raw.startswith("```"):

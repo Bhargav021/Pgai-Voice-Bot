@@ -1,5 +1,0 @@
-Call: simple_scheduling-20260623-154124
-==================================================
-
-AGENT:   This call may be recorded for quality and training purposes.
-PATIENT: That's fine, I understand. I'm looking to schedule a routine quarterly checkup for my diabetes.
